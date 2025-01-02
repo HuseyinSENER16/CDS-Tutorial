@@ -1,0 +1,12 @@
+@EndUserText.label: 'Access control'
+@MappingRole: true
+define role ZHSX_AC_R_TRAVEL {
+    grant
+        select
+            on
+                zhsx_r_travel
+                    where
+//                        CurrencyCode = 'USD' or 
+                        true;
+                        
+}

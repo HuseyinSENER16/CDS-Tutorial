@@ -1,0 +1,4 @@
+@EndUserText.label: 'Travel Service Definition'
+define service Zhsx_ui_Travel {
+  expose zhsx_r_travel;
+}

@@ -1,0 +1,53 @@
+managed;
+strict ( 2 );
+
+define behavior for zhsx_r_travel alias Travel
+implementation in class zhsx_cl_behavior_travel unique
+persistent table zhs_t_travel
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly, numbering : managed ) TravelUuid;
+  field ( readonly ) DiffPrice, OverallStatus;
+
+  action acceptTravel result [1] $self;
+  internal action decideOverallStatus;
+  internal action calculatePrice;
+
+  determination setOverallStatus on modify { field BeginDate, EndDate; }
+  determination calculateDiffPrice on modify { field TotalPrice, BookingFee; }
+
+  side effects
+  {
+    field BeginDate affects field OverallStatus;
+    field EndDate affects field OverallStatus;
+    field BookingFee affects field DiffPrice;
+    field TotalPrice affects field DiffPrice;
+  }
+
+  mapping for zhs_t_travel
+    {
+      TravelUuid         = travel_uuid;
+      TravelID           = travel_id;
+      AgencyID           = agency_id;
+      CustomerID         = customer_id;
+      BeginDate          = begin_date;
+      EndDate            = end_date;
+      BookingFee         = booking_fee;
+      TotalPrice         = total_price;
+      CurrencyCode       = currency_code;
+      Description        = description;
+      OverallStatus      = overall_status;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+
+}
